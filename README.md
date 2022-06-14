@@ -1,4 +1,4 @@
-# jx JSON field extractor
+# jx - simple JSON field extractor
 
 jx is intended to be used to trivially extract fields from json data.
 Text table format is the default output format, but can be changed to 
