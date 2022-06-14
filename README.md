@@ -30,7 +30,7 @@ vs.
 
 ## EXAMPLES
 
-    # field extraction for each line
+    # extract the 'c' and 'a' fields from each object
     $ printf '{"a": 1, "b": 2, "c":3}\n{"a":7,"b":2,"c":20}' | jx c a
     c   a
     3   1
