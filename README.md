@@ -128,8 +128,16 @@ vs.
 
     jq '.events[]' | jx id user
 
+
+## INSTALLATION
+
+copy jx from the bin directory
+
+
     
 ## TODO
+
+    Add better install procedure.
 
     Add positional field extraction. Will require validation of fields on every
     line to match the first line to prevent silently dropping/munging columns
