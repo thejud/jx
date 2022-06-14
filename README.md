@@ -7,11 +7,13 @@ TSV with the -t option, or to another delimiter with with the -d option.
 jx will also auto-detect array input, and paginated input by
 looking at the first line, so you can send paginated results (with
 a total and items key in the first line), or first line starts with '['
+
 use -s/--smart to disable this smartness
 
 jx also provide (basic) flattening for extracting nested fields.
 nested json can be flattened with --flatten, and if so, nested keys
 can be references with the syntax key1 + . + key2 + index
+
 e.g. name.first or addresses.0.zipcode
 
 Use --join to join keys with a different delimiter, like "-"
