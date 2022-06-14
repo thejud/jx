@@ -20,12 +20,13 @@ Use --join to join keys with a different delimiter, like "-"
 json processing, but for my very common use case of slicing out some fields, jx
 is more concise. I frequently use jq to pre-filter data, and then jx to extract fields.
 
-  jq '.[] | .firstname + " " + .lastname
-  jq '.[] | "\(.firstname) \(.lastname)"'
+    jq '.[] | .firstname + " " + .lastname
+    or 
+    jq '.[] | "\(.firstname) \(.lastname)"'
 
 vs.
 
-  jx firstname lastname
+    jx firstname lastname
 
 ## EXAMPLES
 
