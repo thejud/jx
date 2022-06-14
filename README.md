@@ -127,9 +127,7 @@ vs.
 
 
     # combine with jq to extract non-standard paged sets, e.g. 
-    
-
-    jq '.events[]' | jx id user
+    curl xxx | jq '.events[]' | jx id user
 
 
 ## INSTALLATION
@@ -140,13 +138,16 @@ copy jx from the bin directory
     
 ## TODO
 
-    Add better install procedure.
+Add a better install procedure.
 
-    Add positional field extraction. Will require validation of fields on every
-    line to match the first line to prevent silently dropping/munging columns
+Add positional field extraction. Will require validation of fields on every
+line to match the first line to prevent silently dropping/munging columns
 
-    Make the smart page set detection configurable. Better for environments that use different
-    conventions to indicate paged sets. Note that you can pre-filter with jq if you  
+Make the smart page set detection configurable. Better for environments that
+use different conventions to indicate paged sets. Note that you can use jq to
+extract only the objects you want, then extract the desired fields with jx:
+
+    jq '.permissions.users[]' | jx id name
 
 ## AUTHOR
 
