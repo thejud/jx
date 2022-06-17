@@ -126,8 +126,9 @@ vs.
     c
 
 
-    # combine with jq to extract non-standard paged sets, e.g. 
-    curl xxx | jq '.events[]' | jx id user
+    # combine with jq to extract from arbitrarily deep structures
+    curl https://dummyjson.com/products | jq .products | jx id price title
+
 
 
 ## INSTALLATION
