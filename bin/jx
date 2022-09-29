@@ -20,8 +20,15 @@ jq is a much better alternative for many things, but for my
 comon use case of slicing out some fields, it's overly verbose.
 
 EXAMPLES:
-    # field extraction
+    # field extraction. Reads from stdin by default.
     $ echo '{"a": 1, "b": 2, "c":3}' | jx c a
+    c  a
+    3  1
+
+
+    # extract  from a file, not stdin. Default is to read from stdin.
+    $ echo '{"a": 1, "b": 2, "c":3}' > /tmp/jxtmp
+    $ jx c a -i /tmp/jxtmp
     c  a
     3  1
 
@@ -121,6 +128,7 @@ import json
 import logging
 import sys
 
+
 class Flattener:
     def __init__(self, joiner="_"):
         self.joiner = joiner
@@ -208,8 +216,11 @@ def parse_args():
             help='debug')
     parser.add_argument('-w', '--whitespace', action='store_true',
             help="translate whitespace to _ in fields")
+    parser.add_argument('--infile', '-i', type=argparse.FileType(),
+            help='alternate input file. Default is stdin',
+            default=sys.stdin)
     parser.add_argument('fields', nargs="*",
-            help="list of field names to extract")
+            help="list of field names to extract.")
 
     opts = parser.parse_args()
     if opts.flatten_dot:
@@ -217,6 +228,7 @@ def parse_args():
         opts.joiner = '.'
 
     return opts
+
 
 def parse_first(first_line, fh, opts):
     logging.debug('smartly checking first line: %s', first_line)
@@ -272,6 +284,7 @@ def run():
     opts = parse_args()
     if opts.debug:
         logging.getLogger().setLevel(logging.DEBUG)
+    
     out=sys.stdout
     if opts.delimiter is not None:
         printer = DelimitedPrinter(opts.delimiter)
@@ -285,11 +298,11 @@ def run():
 
     if opts.all_names:
         flatten = flattener if opts.flatten else None
-        print_all_keys(read(sys.stdin, opts), flattener=flatten)
+        print_all_keys(read(opts.infile, opts), flattener=flatten)
         return
 
 
-    for data in read(sys.stdin, opts):
+    for data in read(opts.infile, opts):
         if opts.flatten:
             data = flattener.flatten(data)
         if opts.names:
