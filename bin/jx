@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """trivial field extractor for json
 
-jx is intended to be used to trivially extract fields from json data.
+jx is intended to be used to cut fields from json data.
 Text table format is the default output format, but can be changed to 
 TSV with the -t option, or to another delimiter with with the -d option.
 
