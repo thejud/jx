@@ -1,0 +1,16 @@
+## DESC
+-w collapses whitespace in fields, but not in column headings
+
+## ARGS
+--whitespace 'user id' name
+
+## INPUT
+
+{"user id":1001,"name":"John Doe","address":{"street":"123 Main St","city":"Anytown","zip":"12345"}}
+{"user id":1002,"name":"Jane Doe","address":{"street":"456 Elm St","city":"Othertown","zip":"67890"}}
+
+## OUTPUT
+
+user id  name
+1001     John_Doe
+1002     Jane_Doe

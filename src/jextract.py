@@ -1,116 +1,102 @@
 #!/usr/bin/env python
 """trivial field extractor for json
 
-jx is intended to be used to cut fields from json data.
+jextract.py is intended to be used to cut fields from json data.
 Text table format is the default output format, but can be changed to 
 TSV with the -t option, or to another delimiter with with the -d option.
 
-jx will also auto-detect array input, and paginated input by
+jextract.py will also auto-detect array input, and paginated input by
 looking at the first line, so you can send paginated results (with
 a total and items key in the first line), or first line starts with '['
 use -s/--smart to disable this smartness
 
-jx also provide (basic) flattening for extracting nested fields.
+jextract.py also provide (basic) flattening for extracting nested fields.
 nested json can be flattened with --flatten, and if so, nested keys
-can be references with the syntax key1 + _ + key2 + index
-e.g. name_first or addresses_0_zipcode
-Use --join to join keys with a different delimiter, like "."
+wan be references with the syntax key1 + . + key2 + index
+e.g. name.first or addresses.0.zipcode
+Use --join to join keys with a different delimiter, like "|"
 
 jq is a much better alternative for many things, but for my
-comon use case of slicing out some fields, it's overly verbose.
+common use case of slicing out some fields, it's overly verbose.
 
 EXAMPLES:
     # field extraction. Reads from stdin by default.
-    $ echo '{"a": 1, "b": 2, "c":3}' | jx c a
+    $ echo '{"a": 1, "b": 2, "c":3}' | jextract.py c a
     c  a
     3  1
 
 
     # extract  from a file, not stdin. Default is to read from stdin.
     $ echo '{"a": 1, "b": 2, "c":3}' > /tmp/jxtmp
-    $ jx c a -i /tmp/jxtmp
+    $ jextract.py c a -i /tmp/jxtmp
     c  a
     3  1
 
     # columnar output is the default. No fields prints all values
-    $ printf '{"a": "foo", "b": 1}\n{"a":"loooooong", "b":2}' | jx 
+    $ printf '{"a": "foo", "b": 1}\n{"a":"loooooong", "b":2}' | jextract.py
     foo        1
     loooooong  2
 
     # no headers
-    $ echo '{"a": 1, "b": 2, "c":3}' | jx -H c a
+    $ echo '{"a": 1, "b": 2, "c":3}' | jextract.py -H c a
     3  1
 
     # flatten
-    $ echo '{"a": {"b": 2, "c":3, "d":[5,6] }}' | jx -F a_c a_b
+    $ echo '{"a": {"b": 2, "c":3, "d":[5,6] }}' | jextract.py -F a_c a_b
     a_c  a_b
     3    2
 
     # flatten with dot
     # with -f or -F, should be easy to separate keys from parents
-    $ echo '{"a": {"b": 2, "c":3, "d":[5,6] }}' | jx -f a.c a.b
+    $ echo '{"a": {"b": 2, "c":3, "d":[5,6] }}' | jextract.py -f a.c a.b
     a.c  a.b
     3    2
 
-    # flatten with array indexing
-    $ echo '{"a": {"b": 2, "c":3, "d": [7,10]}}' | jx -F a_c a_d_0
+    # flatten with array indexing, taking the first element of an array
+    $ echo '{"a": {"b": 2, "c":3, "d": [7,10]}}' | jextract.py -F a_c a_d_0
     a_c	 a_d_0
     3    7
 
     # get field names from first line
-    echo '{"a": 1, "b": 2, "c":3}' | jx --names
+    echo '{"a": 1, "b": 2, "c":3}' | jextract.py --names
     a
     b
     c
 
     # alternate json level joiner. Default is '.'
-    $  echo '{"a": {"b": 2, "c":3, "d":[5,6] }}' | jx -F -j. a.c a.b
+    $  echo '{"a": {"b": 2, "c":3, "d":[5,6] }}' | jextract.py -F -j. a.c a.b
     a.c  a.b
     3    2  
     
     # tab-separated output
-    $ echo '{"a":1, "b": 2, "c":3}' | jx  -t a c
+    $ echo '{"a":1, "b": 2, "c":3}' | jextract.py  -t a c
     a	c
     1	3
 
     # alternate output delimiter
-    $ echo '{"a":1, "b": 2, "c":3}' | jx  -s '|'  a c
+    $ echo '{"a":1, "b": 2, "c":3}' | jextract.py  -s '|'  a c
     a|c
     1|3
 
     # collapse whitespace in output fields, useful for columnar output
-    $ echo '{"first": "Jud D"}' | jx -w 
+    $ echo '{"first": "Jud D"}' | jextract.py -w
     first
     Jud_D
 
     # smart parsing: autodetect arrays
-    echo '[{"a":1},{"a":2}]' | jx a
+    echo '[{"a":1},{"a":2}]' | jextract.py a
     a
     1
     2
 
     # smart detecting multiline arrays (json pretty printed)
-    echo '[{"a":1},{"a":2}]' | jq | jx a
+    echo '[{"a":1},{"a":2}]' | jq | jextract.py a
     a
     1
     2
-
-    # smart parsing: autodetect paged sets (with items and total)
-    $ echo '{"total":2,"items":[{"a":1},{"a":2"}]}' | jx a
-    a
-    1
-    2
-
-    # smart detecting multiline paged sets (json pretty printed)
-    echo '{"items":[{"a":1},{"a":2}]}' | jq | jx a
-
-    # turn off smart parsing
-    $ echo '{"total":2,"items":[{"a":1},{"a":2}]}' | jx -s items
-    items
-    [{"a":1},{"a":2}]}
 
     # extract all keys from all objects
-    printf '{"b":1,"a":2}\n{"b":2,"c":3}' | jx --all-keys
+    printf '{"b":1,"a":2}\n{"b":2,"c":3}' | jextract.py --all-keys
     b
     a
     c
@@ -149,6 +135,7 @@ class Flattener:
             out[key] = data
         return out
 
+
 class ColumnPrinter:
     def __init__(self, joiner="  "):
         self.joiner = joiner
@@ -173,15 +160,17 @@ class ColumnPrinter:
                 line = self.joiner.join(padded)
                 print(line)
 
+
 class DelimitedPrinter:
     def __init__(self, joiner):
         self.joiner=joiner
 
     def print(self, columns):
         print(self.joiner.join(columns))
-    
+
     def flush(self):
         pass
+
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -205,13 +194,15 @@ def parse_args():
             help='flatten json before selecting. uses "." as joiner' )
 
     parser.add_argument('-j', '--joiner',
-            help='joiner for keynames when flattening levels, ' + 
+            help='joiner for keynames when flattening levels, ' +
                 'e.g. "key1_key2". Default: %(default)s', default='_')
     parser.add_argument('-H', '--headers', action='store_true',
             help="skip header printing")
     parser.add_argument('-s', '--smart', action='store_false',
             default='True',
             help='disable smart detection of arrays and paginated results')
+    parser.add_argument('-p', '--paginated', action='store_true',
+            help='detect paginated result in an `items` field')
     parser.add_argument('-D', '--debug', action='store_true',
             help='debug')
     parser.add_argument('-w', '--whitespace', action='store_true',
@@ -222,40 +213,39 @@ def parse_args():
     parser.add_argument('fields', nargs="*",
             help="list of field names to extract.")
 
-    opts = parser.parse_args()
-    if opts.flatten_dot:
-        opts.flatten=True
-        opts.joiner = '.'
+    options = parser.parse_args()
+    if options.flatten_dot:
+        options.flatten = True
+        options.joiner = '.'
 
-    return opts
+    return options
 
 
-def parse_first(first_line, fh, opts):
+def parse_first(first_line, fh, opts) -> list[dict]:
     logging.debug('smartly checking first line: %s', first_line)
     stripped = first_line.strip()
     if stripped.startswith('['):
         logging.info("array detected")
-        if stripped == '[':
-            logging.info("multiline array detected")
-            first_line = first_line + fh.read()
+        first_line = first_line + fh.read()
         return json.loads(first_line)
 
-    if stripped == '{':     
+    if stripped == '{':
         logging.info("multiline json object detected.")
         first_line = first_line + fh.read()
 
     parsed = json.loads(first_line)
-    if opts.smart and 'items' in parsed:
-        logging.info('smart detected a paged set')
+
+    if opts.paginated and 'items' in parsed:
+        logging.info('smart detected a paged set in `items`')
         return parsed['items']
-    
-    # standard obect on the first line
+
+    # standard object on the first line for JSONL data
     return [parsed]
 
 
 def read(fh, opts) -> dict:
     first_line = ""
-    while first_line.strip() == "": 
+    while first_line.strip() == "":
         first_line = fh.readline()
 
     for parsed_row in parse_first(first_line, fh, opts):
@@ -263,7 +253,7 @@ def read(fh, opts) -> dict:
 
     for line in fh:  # one object per line
         logging.debug(f">>>{line.strip()}<" + "\n")
-        if not line.strip(): 
+        if not line.strip():
             logging.debug('skipping')
             continue
         yield json.loads(line)
@@ -275,17 +265,15 @@ def print_all_keys(objects, flattener=None) -> None:
         if flattener:
             ob = flattener.flatten(ob)
         for key in ob.keys():
-            if key not in seen_keys: 
+            if key not in seen_keys:
                 print(key)
                 seen_keys.add(key)
 
 
-def run():
-    opts = parse_args()
+def run(opts):
     if opts.debug:
         logging.getLogger().setLevel(logging.DEBUG)
-    
-    out=sys.stdout
+
     if opts.delimiter is not None:
         printer = DelimitedPrinter(opts.delimiter)
     else:
@@ -301,7 +289,6 @@ def run():
         print_all_keys(read(opts.infile, opts), flattener=flatten)
         return
 
-
     for data in read(opts.infile, opts):
         if opts.flatten:
             data = flattener.flatten(data)
@@ -310,25 +297,30 @@ def run():
                 print(k)
             return
 
-
         logging.debug(data.keys())
 
         if not opts.headers and not opts.fields:
-            logging.warning("taking field names from first line. use -H to disable")
+            logging.warning("taking field names from first object. use -H to disable")
             opts.fields = data.keys()
             printer.print(opts.fields)
 
         # if we have a list of fields, use them. Otherwise, print all keys
-        fields = [ str(data.get(f, "")) for f in opts.fields or data.keys()]
-        
+        fields = [str(data.get(f, "")) for f in opts.fields or data.keys()]
+
         if opts.whitespace:
-            fields = [ f.replace(" ", "_") for f in fields]
+            fields = [f.replace(" ", "_") for f in fields]
 
         logging.debug(fields)
         printer.print(fields)
 
     printer.flush()
 
-if __name__ == '__main__':
+
+def cli():
     logging.basicConfig(level=logging.INFO)
-    run()
+    opts = parse_args()
+    run(opts)
+
+
+if __name__ == '__main__':
+    cli()

@@ -1,0 +1,20 @@
+## DESC
+-all-names extract all fields from heterogeneous objects
+
+## ARGS
+--all-names
+
+## INPUT
+
+{"user":1, "id":2}
+{"user":2, "name":"Frankie"}
+{"first":"Joe", "last":"Blue", "age":28}
+
+## OUTPUT
+
+user
+id
+name
+first
+last
+age

@@ -1,0 +1,16 @@
+## DESC
+No fields extracts all fields with simple serialization.
+
+## ARGS
+
+
+## INPUT
+
+{"uid":1001,"name":"John Doe","address":{"street":"123 Main St","city":"Anytown","zip":"12345"}}
+{"uid":1002,"name":"Jane Doe","address":{"street":"456 Elm St","city":"Othertown","zip":"67890"}}
+
+## OUTPUT
+
+uid   name      address
+1001  John Doe  {'street': '123 Main St', 'city': 'Anytown', 'zip': '12345'}
+1002  Jane Doe  {'street': '456 Elm St', 'city': 'Othertown', 'zip': '67890'}

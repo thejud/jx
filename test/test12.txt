@@ -1,0 +1,29 @@
+## DESC
+pretty-printed and/or mixed arrays are auto-detected
+
+## ARGS
+
+uid
+
+## INPUT
+[ {
+    "first": "John",
+    "last": "Doe",
+    "uid": 1001,
+    "score": 85,
+    "game": "Chess"
+  },
+  {
+    "first": "Jane",
+    "last": "Doe",
+    "uid": 1002,
+    "score": 92,
+    "game": "Chess"
+  }
+]
+
+## OUTPUT
+
+uid
+1001
+1002

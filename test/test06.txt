@@ -1,0 +1,19 @@
+## DESC
+-f flattens arrays, skips missing elements
+
+## ARGS
+-f uid addresses.1.zip name
+
+## INPUT
+{"uid":1001,"name":"John Doe","addresses":[{"street":"123 Main St","zip":"12345"}, {"street":"303 2nd St", "zip": "33112"}]}
+{"uid":1002,"name":"Jane Doe","addresses":[{"street":"456 Elm St","city":"Othertown","zip":"67890"}]}
+{"uid":1003,"name":"Meesha Jones"}
+{"uid":1004,"name":"Bob Smith","addresses":[{"street":"789 Maple St","city":"Sometown","zip":"45678"},{"street":"1015 Folsom", "city": "SF", "zip": "94103-4016"}]}
+
+## OUTPUT
+
+uid   addresses.1.zip  name
+1001  33112            John Doe
+1002                   Jane Doe
+1003                   Meesha Jones
+1004  94103-4016       Bob Smith

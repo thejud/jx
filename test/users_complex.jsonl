@@ -1,0 +1,10 @@
+{"uid":1001,"name":"John Doe","address":{"street":"123 Main St","city":"Anytown","zip":"12345"}}
+{"uid":1002,"name":"Jane Doe","address":{"street":"456 Elm St","city":"Othertown","zip":"67890"}}
+{"uid":1003,"name":"Bob Smith","address":{"street":"789 Maple St","city":"Sometown","zip":"45678"}}
+{"uid":1004,"name":"Alice Jones","address":{"street":"321 Oak St","city":"Anothertown","zip":"23456"}}
+{"uid":1005,"name":"Tom Hanks","address":{"street":"543 Pine St","city":"Somewhere","zip":"78901"}}
+{"uid":1006,"name":"Kate Winslet","address":{"street":"987 Cedar St","city":"Anywhere","zip":"34567"}}
+{"uid":1007,"name":"Chris Evans","address":{"street":"654 Birch St","city":"NoPlace","zip":"89012"}}
+{"uid":1008,"name":"Scarlett Johansson","address":{"street":"789 Elm St","city":"Nowhere","zip":"12345"}}
+{"uid":1009,"name":"Robert Downey Jr.","address":{"street":"432 Oak St","city":"Somewhere","zip":"56789"}}
+{"uid":1010,"name":"Emma Watson","address":{"street":"876 Pine St","city":"Anywhere","zip":"23456"}}

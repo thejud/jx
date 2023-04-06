@@ -1,0 +1,6 @@
+{"total":4, "items":[{"first": "John", "last": "Doe", "uid": 1001, "score": 85, "game": "Chess"},
+{"first": "Jane", "last": "Doe", "uid": 1002, "score": 92, "game": "Chess"},
+{"first": "Bob", "last": "Smith", "uid": 1003, "score": 77, "game": "Checkers"},
+{"first": "Alice", "last": "Jones", "uid": 1004, "score": 94, "game": "Checkers"}
+]
+}

@@ -1,0 +1,13 @@
+## DESC
+Extract two fields, no header
+
+## ARGS
+-H uid first
+
+## INPUT
+{"first": "John", "last": "Doe", "uid": 1001, "score": 85, "game": "Chess"}
+{"first": "Jane", "last": "Doe", "uid": 1002, "score": 92, "game": "Chess"}
+
+## OUTPUT
+1001  John
+1002  Jane

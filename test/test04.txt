@@ -1,0 +1,16 @@
+## DESC
+-f flattens with dot notation
+
+## ARGS
+-f uid address.zip
+
+## INPUT
+
+{"uid":1001,"name":"John Doe","address":{"street":"123 Main St","city":"Anytown","zip":"12345"}}
+{"uid":1002,"name":"Jane Doe","address":{"street":"456 Elm St","city":"Othertown","zip":"67890"}}
+
+## OUTPUT
+
+uid   address.zip
+1001  12345
+1002  67890
