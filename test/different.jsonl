@@ -1,0 +1,4 @@
+{"name":"bar", "count":17}
+{"name":"cat", "count":17, "cost": 25}
+{"first":"fname", "last": "lastname", "uid": "user1", "age": 30}
+

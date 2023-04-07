@@ -5,9 +5,7 @@ jextract.py is intended to be used to cut fields from json data.
 Text table format is the default output format, but can be changed to 
 TSV with the -t option, or to another delimiter with with the -d option.
 
-jextract.py will also auto-detect array input, and paginated input by
-looking at the first line, so you can send paginated results (with
-a total and items key in the first line), or first line starts with '['
+jextract.py will also auto-detect array input when the first line starts with '['
 use -s/--smart to disable this smartness
 
 jextract.py also provide (basic) flattening for extracting nested fields.
@@ -172,7 +170,7 @@ class DelimitedPrinter:
         pass
 
 
-def parse_args():
+def parse_args(args=None):
     parser = argparse.ArgumentParser(
             description="%(prog)s extract fields easily from json")
 
@@ -213,7 +211,7 @@ def parse_args():
     parser.add_argument('fields', nargs="*",
             help="list of field names to extract.")
 
-    options = parser.parse_args()
+    options = parser.parse_args(args=args)
     if options.flatten_dot:
         options.flatten = True
         options.joiner = '.'
@@ -316,9 +314,9 @@ def run(opts):
     printer.flush()
 
 
-def cli():
+def cli(args=None):
     logging.basicConfig(level=logging.INFO)
-    opts = parse_args()
+    opts = parse_args(args=args)
     run(opts)
 
 

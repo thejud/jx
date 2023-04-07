@@ -1,0 +1,17 @@
+## DESC
+-all-names can be combined with --flatten
+
+## ARGS
+--all-names --flatten-dothhh
+
+## INPUT
+
+{"user":1, "id":2}
+{"user":2, "names":["Frankie", "Zooey"]}
+
+## OUTPUT
+
+user
+id
+names.0
+names.1
