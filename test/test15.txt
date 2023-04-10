@@ -2,7 +2,7 @@
 -all-names can be combined with --flatten
 
 ## ARGS
---all-names --flatten-dothhh
+--all-names --flatten-dot
 
 ## INPUT
 

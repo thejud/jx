@@ -33,7 +33,7 @@ def test_file(request):
     for i in range(1, len(sections), 2):
         # Extract the name and content of the section
         section_name = sections[i]
-        section_content = sections[i+1].strip()
+        section_content = sections[i + 1].strip()
 
         # Check the name of the section and store its content appropriately
         if section_name == 'DESC':
@@ -50,7 +50,7 @@ def test_file(request):
     return request.param.name, desc, args, input_data, output_data
 
 
-def test_functional(test_file, monkeypatch, capsys):
+def test_arguments_parameterized(test_file, monkeypatch, capsys):
     filename, description, args_string, input_string, expected_output_str = test_file
     monkeypatch.setattr('sys.stdin', io.StringIO(input_string))
     args = shlex.split(args_string)
@@ -58,3 +58,14 @@ def test_functional(test_file, monkeypatch, capsys):
     result = capsys.readouterr().out.strip()
     assert result == expected_output_str, f"Failed test: [{filename}] {description}"
 
+
+def test_read_from_file(tmp_path, capsys):
+    json_in = '[{"a":1, "b":2, "c":3},{"a":10,"b":20,"c":30}]'
+    temp_file = tmp_path / "test.json"
+    temp_file.write_text(json_in)
+
+    jextract.cli(["-i", str(temp_file), "a"])
+    captured_stdout = capsys.readouterr()  # capture stdout output
+    cli_output = captured_stdout.out
+
+    assert cli_output.strip() == "a\n1\n10\n".strip()

@@ -14,5 +14,3 @@ def test_parse_args_returns_parsed_arguments():
     assert isinstance(result, argparse.Namespace)
     assert result.names is True
     assert result.all_names is False
-
-
