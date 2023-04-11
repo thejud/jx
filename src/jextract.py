@@ -198,9 +198,7 @@ def parse_args(args=None):
             help="skip header printing")
     parser.add_argument('-s', '--smart', action='store_false',
             default='True',
-            help='disable smart detection of arrays and paginated results')
-    parser.add_argument('-p', '--paginated', action='store_true',
-            help='detect paginated result in an `items` field')
+            help='disable smart detection of arrays')
     parser.add_argument('-D', '--debug', action='store_true',
             help='debug')
     parser.add_argument('-w', '--whitespace', action='store_true',
@@ -232,10 +230,6 @@ def parse_first(first_line, fh, opts) -> list[dict]:
         first_line = first_line + fh.read()
 
     parsed = json.loads(first_line)
-
-    if opts.paginated and 'items' in parsed:
-        logging.info('smart detected a paged set in `items`')
-        return parsed['items']
 
     # standard object on the first line for JSONL data
     return [parsed]

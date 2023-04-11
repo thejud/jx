@@ -1,5 +1,5 @@
 ## DESC
-Extract two fields
+Extract two fields, skip blanks
 
 ## ARGS
 uid first
@@ -8,7 +8,10 @@ uid first
 {"first": "John", "last": "Doe", "uid": 1001, "score": 85, "game": "Chess"}
 {"first": "Jane", "last": "Doe", "uid": 1002, "score": 92, "game": "Chess"}
 
+{"first": "Mike", "last": "Fong", "uid": 1003, "score": 91, "game": "Checkers"}
+
 ## OUTPUT
 uid   first
 1001  John
 1002  Jane
+1003  Mike
