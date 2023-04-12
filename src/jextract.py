@@ -122,7 +122,7 @@ class Flattener:
         prefix = [] if prefix is None else prefix
 
         if isinstance(data, dict):
-            for k,value in data.items():
+            for k, value in data.items():
                 self.flatten(value, out, prefix + [k])
         elif isinstance(data, list):
             for counter, value in enumerate(data):
@@ -154,14 +154,14 @@ class ColumnPrinter:
         for row in self.rows:
             padded = [val.ljust(width) for val, width in zip(row, widths)]
             if padded:
-                padded[-1] = list(row)[-1] # don't pad the last field
+                padded[-1] = list(row)[-1]  # don't pad the last field
                 line = self.joiner.join(padded)
                 print(line)
 
 
 class DelimitedPrinter:
     def __init__(self, joiner):
-        self.joiner=joiner
+        self.joiner = joiner
 
     def print(self, columns):
         print(self.joiner.join(columns))
@@ -172,42 +172,42 @@ class DelimitedPrinter:
 
 def parse_args(args=None):
     parser = argparse.ArgumentParser(
-            description="%(prog)s extract fields easily from json")
+        description="%(prog)s extract fields easily from json")
 
-    group=parser.add_mutually_exclusive_group()
+    group = parser.add_mutually_exclusive_group()
     group.add_argument('-t', '--tsv', action='store_const', const="\t",
-            dest="delimiter", help='tab-delimited output. Also see --delimiter')
+                       dest="delimiter", help='tab-delimited output. Also see --delimiter')
     group.add_argument('-d', '--delimiter', help='delimiter for json fields/columns')
 
-    group2=parser.add_mutually_exclusive_group()
+    group2 = parser.add_mutually_exclusive_group()
     group2.add_argument('-n', '--names', action='store_true',
-            help='show column names from initial object and exit')
+                        help='show column names from initial object and exit')
     group2.add_argument('-N', '--all-names', action='store_true',
-            help="print unique key names from all objects in the order they appear")
+                        help="print unique key names from all objects in the order they appear")
 
-    group3=parser.add_mutually_exclusive_group()
+    group3 = parser.add_mutually_exclusive_group()
     group3.add_argument('-F', '--flatten', action='store_true',
-            help='flatten json before selecting. uses the --joiner')
+                        help='flatten json before selecting. uses the --joiner')
     group3.add_argument('-f', '--flatten-dot', action='store_true',
-            help='flatten json before selecting. uses "." as joiner' )
+                        help='flatten json before selecting. uses "." as joiner')
 
     parser.add_argument('-j', '--joiner',
-            help='joiner for keynames when flattening levels, ' +
-                'e.g. "key1_key2". Default: %(default)s', default='_')
+                        help='joiner for keynames when flattening levels, ' +
+                             'e.g. "key1_key2". Default: %(default)s', default='_')
     parser.add_argument('-H', '--headers', action='store_true',
-            help="skip header printing")
+                        help="skip header printing")
     parser.add_argument('-s', '--smart', action='store_false',
-            default='True',
-            help='disable smart detection of arrays')
+                        default='True',
+                        help='disable smart detection of arrays')
     parser.add_argument('-D', '--debug', action='store_true',
-            help='debug')
+                        help='debug')
     parser.add_argument('-w', '--whitespace', action='store_true',
-            help="translate whitespace to _ in fields")
+                        help="translate whitespace to _ in fields")
     parser.add_argument('--infile', '-i', type=argparse.FileType(),
-            help='alternate input file. Default is stdin',
-            default=sys.stdin)
+                        help='alternate input file. Default is stdin',
+                        default=sys.stdin)
     parser.add_argument('fields', nargs="*",
-            help="list of field names to extract.")
+                        help="list of field names to extract.")
 
     options = parser.parse_args(args=args)
     if options.flatten_dot:

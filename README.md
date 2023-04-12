@@ -2,22 +2,22 @@ jx - simple JSON field extractor
 
 jx extracts one or more fields from json data for easy processing, like the linux `cut` command.
 
-    $ cat users.json
+    $ cat users.jsonl
     {"first": "John", "last": "Doe", "uid": 1001, "score": 85, "game": "Chess"}
     {"first": "Jane", "last": "Doe", "uid": 1002, "score": 92, "game": "Chess"}
     {"first": "Bob", "last": "Smith", "uid": 1003, "score": 77, "game": "Checkers"}
 
 
     # extract the score, uid and first name from each object
-    $ jx score uid first < users.json
-    uid   score  first
-    1001  85     John
-    1002  92     Jane
-    1003  77     Bob
+    $ jx score uid first < users.jsonl
+    score  uid   first
+    85     1001  John
+    92     1002  Jane
+    77     1003  Bob
 
 [jq](https://stedolan.github.io/jq/) is a much better alternative for advanced
 json processing, but for my very common use case of slicing out some fields, `jx`
-is more concise. I frequently use jq to pre-filter data, and then jx to extract fields.
+is more concise.
 
     jx firstname lastname < names.json
 
@@ -82,12 +82,13 @@ along with each player who plays that game.
     Chess	John,Jane,Tom,Kate,Robert,Emma
 
 If this sort of text processing is useful to you, also check out my
-[text processing cookbook](https://github.com/thejud/text-processing-cookbook), where I describe many other techniques
-for quickly manipulating plain text into a data source for analysis.
+[text processing cookbook](https://github.com/thejud/text-processing-cookbook), 
+where I describe many other techniques for quickly manipulating plain text into data for analysis.
 
 As I mentioned previously, I use `jx` alongside `jq`. `jq` is obviously much more fully featured. However, I prefer
 to extract the data I need using `jx`, and then use other standard tools for manipulating that data, rather than doing
-complicated transformations with `jq` expressions.
+complicated transformations with `jq` expressions. I will often use `jq` as a pre-filter for `jx`, for example to
+to unpack the `results` key of a paginated results set, and then extract field names.
 
 ## EXAMPLES
 
@@ -170,13 +171,15 @@ complicated transformations with `jq` expressions.
 
     # combine with jq to extract from arbitrarily deep structures
     curl https://dummyjson.com/products | jq '.products[]' | jx id price title
+    cat permissions | jq .permissions.users[] | jx id user
 
 
 
 ## INSTALLATION
 
-copy jx from the bin directory
+pip install jextract
 
+You can also simply copy the jextract.py binary from the src directory, as it has no dependencies.
 
 ## LIMITATIONS
 
@@ -200,16 +203,9 @@ copy jx from the bin directory
     
 ## TODO
 
-Add a better install procedure.
-
 Add positional field extraction. Will require validation of fields on every
 line to match the first line to prevent silently dropping/munging columns
 
-Make the smart page set detection configurable. Better for environments that
-use different conventions to indicate paged sets. Note that you can use jq to
-extract only the objects you want, then extract the desired fields with jx:
-
-    jq '.permissions.users[]' | jx id name
 
 ## AUTHOR
 
