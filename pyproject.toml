@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jextract"
+readme = "README.md"
+description = "A simple tool to easily extract columns from json"
+version = "0.9.1"
+authors = [
+    {"name" = "Jud Dagnall", "email" = "github@dagnall.net"}
+]
+license = {text = "MIT License"}
+requires-python = ">=3.3"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating9System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    ]
+
+
+[project.urls]
+"Homepage" = "https://github.com/thejud/jx"
+

@@ -1,6 +1,6 @@
 jx - simple JSON field extractor
 
-jx extracts one or more fields from json data for easy processing, like the linux `cut` command.
+jx extracts one or more fields from json data for easy processing, similar the linux `cut` command.
 
     $ cat users.jsonl
     {"first": "John", "last": "Doe", "uid": 1001, "score": 85, "game": "Chess"}
@@ -185,7 +185,7 @@ You can also simply copy the jextract.py binary from the src directory, as it ha
 
 1. The column pretty printer reads everything into memory so that it can compute
    proper column lengths by reading every row. If this is a problem, use the `--delimited` option
-   instead and provide a delimiter, or the `-t` output for TSV output.. 
+   instead and provide a delimiter, or the `-t` output for TSV output. 
 
 2. JSON parsing makes a few assumptions:
   - If the first line non-blank link is `{`, multi-line (pretty printed) input is assumed, and the
